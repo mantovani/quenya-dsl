@@ -54,7 +54,7 @@ object ParserQuenyaDsl extends JavaTokenParsers {
   def operator: Parser[Any] = at | dollar
   def at: Parser[String] = "@" ~> alias
   def dollar : Parser[Any] = "$" ~> alias ~ opt(":") ~ datatype
-  def alias : Parser[String] = """([\w.]+|(?=`)[\w. :;$\-]+(?=`))""".r
+  def alias : Parser[String] = """^([\w.]+|(?=`)[\w. :;$\-]+(?=`))""".r
   def datatype : Parser[Option[DataType]] = ("BinaryType" ^^ (dt => Some(BinaryType))
     | "FloatType" ^^ (dt => Some(FloatType))
     | "ByteType" ^^ (dt => Some(ByteType))

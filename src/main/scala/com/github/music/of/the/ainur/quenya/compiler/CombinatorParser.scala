@@ -46,7 +46,7 @@ object ParserQuenyaDsl extends JavaTokenParsers {
       }
   }
   def precedence: Parser[Int] = """^[\t\s]*""".r ^^ (prec => prec.replaceAll(" ","\t").count(_ == '\t'))
-  def col: Parser[StateSelect] = """([\w.]+|(?=`)[\w. :;$\-]+(?=`))""".r ~ opt(element) ^^ {
+  def col: Parser[StateSelect] = """^([\w.]+|(?=`)[\w. :;$\-]+(?=`))""".r ~ opt(element) ^^ {
     case a ~ Some(b) => StateSelect(a,b)
     case a ~ None => StateSelect(a,None)
   }

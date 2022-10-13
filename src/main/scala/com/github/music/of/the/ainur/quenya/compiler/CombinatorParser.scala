@@ -46,7 +46,7 @@ object ParserQuenyaDsl extends JavaTokenParsers {
       }
   }
   def precedence: Parser[Int] = """^[\t\s]*""".r ^^ (prec => prec.replaceAll(" ","\t").count(_ == '\t'))
-  def col: Parser[StateSelect] = """[0-9A-Za-z._ ]+""".r ~ opt(element) ^^ {
+  def col: Parser[StateSelect] = """([0-9A-Za-z._ ]+|(?=`)[0-9A-Za-z._ :;$\-]+(?=`))""".r ~ opt(element) ^^ {
     case a ~ Some(b) => StateSelect(a,b)
     case a ~ None => StateSelect(a,None)
   }
@@ -54,7 +54,7 @@ object ParserQuenyaDsl extends JavaTokenParsers {
   def operator: Parser[Any] = at | dollar
   def at: Parser[String] = "@" ~> alias
   def dollar : Parser[Any] = "$" ~> alias ~ opt(":") ~ datatype
-  def alias : Parser[String] = "[0-9A-Za-z._ ]+".r
+  def alias : Parser[String] = """([0-9A-Za-z._ ]+|(?=`)[0-9A-Za-z._ :;$\-]+(?=`))""".r
   def datatype : Parser[Option[DataType]] = ("BinaryType" ^^ (dt => Some(BinaryType))
     | "FloatType" ^^ (dt => Some(FloatType))
     | "ByteType" ^^ (dt => Some(ByteType))

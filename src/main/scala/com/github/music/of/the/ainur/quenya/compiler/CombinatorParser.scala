@@ -6,7 +6,6 @@ import scala.util.parsing.combinator._
 
 /*
  Spark DSL Backus-Naur form.
-
  <dsl> ::= \{"[\r\n]*".r <precedence> <col> <operator> \}
  <precedence> ::= "[\s\t]*".r
  <col> ::= "a-zA-Z0-9_.".r  [ element ]
@@ -15,9 +14,8 @@ import scala.util.parsing.combinator._
  <@> ::= @ <alias>
  <$> ::= $ <alias> : <datatype>
  <alias> ::= "0-9a-zA-Z_".r
- <datatype> ::= BinaryType | BooleanType | StringType | TimestampType | DecimalType 
+ <datatype> ::= BinaryType | BooleanType | StringType | TimestampType | DecimalType
  | DoubleType | FloatType | ByteType | IntegerType | LongType | ShortType
-
  */
 private[quenya] trait CombinatorParser {
   val parser = ParserQuenyaDsl
@@ -39,7 +37,7 @@ trait ParserUtil {
 }
 object ParserQuenyaDsl extends JavaTokenParsers with ParserUtil {
   override val skipWhitespace = false
- 
+
   def dsl: Parser[List[Statement]] = repsep(expression,"""[\n\r]*""".r) ^^ (List() ++ _ )
   def expression: Parser[Statement] = precedence ~ col ~ operator ^^ {
     case prec ~ cl ~ op =>
